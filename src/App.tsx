@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchData } from "./actions";
+import { RootState } from "./types";
 
-function App() {
+const App: React.FC = () => {
+  const dispatch = useDispatch();
+  const data = useSelector((state: RootState) => state.data);
+
+  useEffect(() => {
+    dispatch(fetchData());
+  }, [dispatch]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 className="text-3xl font-bold mt-8 mb-4">Data from API</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {data.map((item) => (
+          <div key={item.id} className="bg-white rounded shadow p-4">
+            <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
+            <p className="text-gray-600">{item.body}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
-}
+};
 
 export default App;
